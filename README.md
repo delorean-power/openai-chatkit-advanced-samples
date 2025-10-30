@@ -120,6 +120,7 @@ chmod +x deploy/*.sh
 - **[LIGHTSHIFT_SETUP.md](LIGHTSHIFT_SETUP.md)** - Internal domain setup (lightshift.local)
 - **[CLOUD_RUN_DEPLOYMENT.md](CLOUD_RUN_DEPLOYMENT.md)** - Complete deployment documentation
 - **[CUSTOM_AGENTS.md](CUSTOM_AGENTS.md)** - Guide for integrating custom agents and workflows
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues and solutions
 
 ### Key Features
 
