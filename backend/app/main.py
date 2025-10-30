@@ -62,6 +62,12 @@ def get_chatkit_server() -> FactAssistantServer:
     return _chatkit_server
 
 
+@app.options("/chatkit")
+async def chatkit_options() -> Response:
+    """Handle CORS preflight for ChatKit endpoint"""
+    return Response(status_code=200)
+
+
 @app.post("/chatkit")
 async def chatkit_endpoint(
     request: Request, server: FactAssistantServer = Depends(get_chatkit_server)
@@ -73,6 +79,12 @@ async def chatkit_endpoint(
     if hasattr(result, "json"):
         return Response(content=result.json, media_type="application/json")
     return JSONResponse(result)
+
+
+@app.options("/facts")
+async def facts_options() -> Response:
+    """Handle CORS preflight for facts endpoint"""
+    return Response(status_code=200)
 
 
 @app.get("/facts")
