@@ -45,11 +45,13 @@ http {
 
         # API proxy to backend
         location /chatkit {
+            # Remove trailing slash from BACKEND_URL if present, then add /chatkit
             proxy_pass ${BACKEND_URL}/chatkit;
             proxy_http_version 1.1;
+            
+            # Don't override Host header - let it pass through to backend
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
-            proxy_set_header Host $host;
             proxy_cache_bypass $http_upgrade;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -59,15 +61,23 @@ http {
             proxy_buffering off;
             proxy_cache off;
             proxy_read_timeout 86400;
+            
+            # Timeouts for Cloud Run
+            proxy_connect_timeout 60s;
+            proxy_send_timeout 60s;
         }
 
         location /facts {
             proxy_pass ${BACKEND_URL}/facts;
             proxy_http_version 1.1;
-            proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
+            
+            # Timeouts for Cloud Run
+            proxy_connect_timeout 60s;
+            proxy_send_timeout 60s;
+            proxy_read_timeout 60s;
         }
 
         # SPA routing - serve index.html for all routes
