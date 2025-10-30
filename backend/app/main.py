@@ -18,16 +18,34 @@ from .facts import fact_store
 
 app = FastAPI(title="ChatKit API")
 
-# Configure CORS - allow all origins for Cloud Run
+# Configure CORS - allow all origins for development
 # In production, you should restrict this to specific domains
-app.add_middleware(
-    CORSMiddleware,
-    allow_origin_regex=r"https://.*\.run\.app|https://.*\.lightshift\.local|http://localhost:\d+",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"],
-)
+import os
+
+# For development/Cloud Run, allow all origins
+# You can restrict this by setting ALLOWED_ORIGINS environment variable
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
+
+if allowed_origins == "*":
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,  # Must be False when allow_origins is ["*"]
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["*"],
+    )
+else:
+    # Use specific origins
+    origins_list = [origin.strip() for origin in allowed_origins.split(",")]
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins_list,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+        expose_headers=["*"],
+    )
 
 _chatkit_server: FactAssistantServer | None = create_chatkit_server()
 
