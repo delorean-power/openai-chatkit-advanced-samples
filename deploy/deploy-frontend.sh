@@ -47,10 +47,11 @@ FULL_IMAGE="$IMAGE_NAME:$IMAGE_TAG"
 echo -e "${YELLOW}Building frontend Docker image...${NC}"
 cd frontend
 
-# Build with backend URL
+# Build with relative URLs (nginx will proxy to backend)
+# The frontend uses /chatkit and /facts which nginx proxies to the backend
 docker build \
-    --build-arg VITE_CHATKIT_API_URL="$BACKEND_URL" \
-    --build-arg VITE_FACTS_API_URL="$BACKEND_URL" \
+    --build-arg VITE_CHATKIT_API_URL="/chatkit" \
+    --build-arg VITE_FACTS_API_URL="/facts" \
     --build-arg VITE_CHATKIT_API_DOMAIN_KEY="${CHATKIT_DOMAIN_KEY:-}" \
     -t $FULL_IMAGE .
 
@@ -60,19 +61,19 @@ docker push $FULL_IMAGE
 echo -e "${YELLOW}Deploying to Cloud Run...${NC}"
 cd ..
 
-# Deploy to Cloud Run
+# Deploy to Cloud Run with backend URL as environment variable
 gcloud run deploy $FRONTEND_SERVICE_NAME \
     --image=$FULL_IMAGE \
     --region=$GCP_REGION \
     --platform=managed \
     --allow-unauthenticated \
+    --set-env-vars="BACKEND_URL=$BACKEND_URL" \
     --memory=${FRONTEND_MEMORY:-256Mi} \
     --cpu=${FRONTEND_CPU:-1} \
     --min-instances=${FRONTEND_MIN_INSTANCES:-0} \
     --max-instances=${FRONTEND_MAX_INSTANCES:-10} \
     --timeout=${FRONTEND_TIMEOUT:-60} \
     --concurrency=${FRONTEND_CONCURRENCY:-80} \
-    --set-env-vars="BACKEND_URL=$BACKEND_URL" \
     --port=8080
 
 # Get the service URL

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from chatkit.server import StreamingResult
@@ -20,7 +21,6 @@ app = FastAPI(title="ChatKit API")
 
 # Configure CORS - allow all origins for development
 # In production, you should restrict this to specific domains
-import os
 
 # For development/Cloud Run, allow all origins
 # You can restrict this by setting ALLOWED_ORIGINS environment variable
