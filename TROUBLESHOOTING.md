@@ -138,7 +138,15 @@ gcloud run services describe chatkit-backend --region=us-central1
 
 **Error:** Frontend shows connection errors or CORS issues
 
-**Solution:**
+**Error in browser console:**
+```
+Access to fetch at 'https://backend-url/' from origin 'https://frontend-url' 
+has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present
+```
+
+**Solution:** ✅ Fixed in latest backend - CORS middleware now allows Cloud Run and lightshift.local domains.
+
+**If still having issues:**
 ```bash
 # 1. Verify backend is running
 curl https://your-backend-url/health

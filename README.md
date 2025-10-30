@@ -118,9 +118,11 @@ chmod +x deploy/*.sh
 
 - **[QUICKSTART.md](QUICKSTART.md)** - 5-minute deployment guide
 - **[LIGHTSHIFT_SETUP.md](LIGHTSHIFT_SETUP.md)** - Internal domain setup (lightshift.local)
+- **[GODADDY_DNS_SETUP.md](GODADDY_DNS_SETUP.md)** - GoDaddy DNS configuration guide
 - **[CLOUD_RUN_DEPLOYMENT.md](CLOUD_RUN_DEPLOYMENT.md)** - Complete deployment documentation
 - **[CUSTOM_AGENTS.md](CUSTOM_AGENTS.md)** - Guide for integrating custom agents and workflows
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues and solutions
+- **[DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)** - Step-by-step deployment checklist
 
 ### Key Features
 

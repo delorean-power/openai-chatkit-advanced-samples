@@ -35,14 +35,14 @@ gcloud config set project $GCP_PROJECT_ID
 
 # Map backend domain
 echo -e "${YELLOW}Setting up backend domain mapping...${NC}"
-if gcloud run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION &> /dev/null; then
+if gcloud beta run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION &> /dev/null; then
     echo -e "${YELLOW}Backend domain mapping already exists, updating...${NC}"
     gcloud run services update-traffic $BACKEND_SERVICE_NAME \
         --region=$GCP_REGION \
         --to-latest
 else
     echo -e "${YELLOW}Creating backend domain mapping...${NC}"
-    gcloud run domain-mappings create \
+    gcloud beta run domain-mappings create \
         --service=$BACKEND_SERVICE_NAME \
         --domain=$BACKEND_CUSTOM_DOMAIN \
         --region=$GCP_REGION
@@ -50,14 +50,14 @@ fi
 
 # Map frontend domain
 echo -e "${YELLOW}Setting up frontend domain mapping...${NC}"
-if gcloud run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION &> /dev/null; then
+if gcloud beta run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION &> /dev/null; then
     echo -e "${YELLOW}Frontend domain mapping already exists, updating...${NC}"
     gcloud run services update-traffic $FRONTEND_SERVICE_NAME \
         --region=$GCP_REGION \
         --to-latest
 else
     echo -e "${YELLOW}Creating frontend domain mapping...${NC}"
-    gcloud run domain-mappings create \
+    gcloud beta run domain-mappings create \
         --service=$FRONTEND_SERVICE_NAME \
         --domain=$FRONTEND_CUSTOM_DOMAIN \
         --region=$GCP_REGION
@@ -73,17 +73,17 @@ echo -e "${YELLOW}DNS Configuration Required:${NC}"
 echo ""
 
 echo -e "${YELLOW}Backend ($BACKEND_CUSTOM_DOMAIN):${NC}"
-gcloud run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION \
+gcloud beta run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION \
     --format="table(status.resourceRecords.name,status.resourceRecords.type,status.resourceRecords.rrdata)" 2>/dev/null || \
     echo "Run this command to get DNS records:"
-echo "  gcloud run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION"
+echo "  gcloud beta run domain-mappings describe --domain=$BACKEND_CUSTOM_DOMAIN --region=$GCP_REGION"
 echo ""
 
 echo -e "${YELLOW}Frontend ($FRONTEND_CUSTOM_DOMAIN):${NC}"
-gcloud run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION \
+gcloud beta run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION \
     --format="table(status.resourceRecords.name,status.resourceRecords.type,status.resourceRecords.rrdata)" 2>/dev/null || \
     echo "Run this command to get DNS records:"
-echo "  gcloud run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION"
+echo "  gcloud beta run domain-mappings describe --domain=$FRONTEND_CUSTOM_DOMAIN --region=$GCP_REGION"
 echo ""
 
 echo -e "${YELLOW}Add these DNS records to your lightshift.local DNS configuration${NC}"
