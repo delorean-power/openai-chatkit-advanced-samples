@@ -95,3 +95,121 @@ Under the [`examples`](examples) directory, you'll find three more sample apps t
 3. [**Marketing Assets**](examples/marketing-assets): marketing creative workflow.
 
 Each example under [`examples/`](examples) includes the helper scripts (`npm start`, `npm run frontend`, `npm run backend`) pre-configured with its dedicated ports, so you can `cd` into an example and run `npm start` to boot its backend and frontend together. Please note that when you run `npm start`, `uv` must already be installed and all required environment variables should be exported.
+
+## Cloud Run Deployment
+
+This repository now includes complete Google Cloud Run deployment support with custom agents and workflows integration.
+
+### Quick Deploy to Cloud Run
+
+Deploy your ChatKit application to production in minutes:
+
+```bash
+# 1. Configure deployment
+cp .env.deploy.template .env.deploy
+# Edit .env.deploy with your GCP project and OpenAI API key
+
+# 2. Deploy everything
+chmod +x deploy/*.sh
+./deploy/deploy-all.sh
+```
+
+### Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)** - 5-minute deployment guide
+- **[CLOUD_RUN_DEPLOYMENT.md](CLOUD_RUN_DEPLOYMENT.md)** - Complete deployment documentation
+- **[CUSTOM_AGENTS.md](CUSTOM_AGENTS.md)** - Guide for integrating custom agents and workflows
+
+### Key Features
+
+✅ **Production-Ready Deployment**
+- Dockerized backend and frontend
+- Auto-scaling with Cloud Run
+- Secure secret management
+- Health checks and monitoring
+
+✅ **Custom Agents & Workflows**
+- OpenAI Agent Builder integration
+- Custom tool development
+- Multi-step workflow support
+- External API integration
+
+✅ **DevOps Best Practices**
+- CI/CD with GitHub Actions
+- Automated testing
+- Easy rollback
+- Cost optimization
+
+✅ **Monitoring & Logging**
+- Cloud Logging integration
+- Performance metrics
+- Health monitoring
+- Alert configuration
+
+### Deployment Scripts
+
+```bash
+# Setup infrastructure
+./deploy/setup.sh
+
+# Deploy backend
+./deploy/deploy-backend.sh
+
+# Deploy frontend
+./deploy/deploy-frontend.sh
+
+# Monitor services
+./deploy/monitor.sh
+
+# Rollback if needed
+./deploy/rollback.sh
+
+# Local Docker testing
+./deploy/local-test.sh
+
+# Cleanup resources
+./deploy/cleanup.sh
+```
+
+### AgentKit Integration
+
+This implementation follows the [AgentKit Walkthrough](https://cookbook.openai.com/examples/agentkit/agentkit_walkthrough) best practices for building, deploying, and optimizing agentic workflows with ChatKit.
+
+Learn more:
+- [OpenAI Agent Builder](https://platform.openai.com/agent-builder)
+- [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)
+- [ChatKit Documentation](https://platform.openai.com/docs/guides/chatkit)
+
+## Architecture
+
+```
+┌─────────────────┐
+│   User Browser  │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────────┐
+│  Cloud Run (Frontend)           │
+│  - React + ChatKit UI           │
+│  - Nginx reverse proxy          │
+└────────┬────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────┐
+│  Cloud Run (Backend)            │
+│  - FastAPI + ChatKit Server     │
+│  - Custom agents & tools        │
+│  - OpenAI Agents SDK            │
+└────────┬────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────┐
+│  OpenAI Platform                │
+│  - GPT Models                   │
+│  - Agent Builder Workflows      │
+└─────────────────────────────────┘
+```
+
+## Contributing
+
+Contributions are welcome! Please read the deployment guides before submitting PRs related to infrastructure or deployment.
