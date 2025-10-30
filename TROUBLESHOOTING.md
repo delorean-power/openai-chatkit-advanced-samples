@@ -4,6 +4,30 @@ Common issues and solutions for ChatKit Cloud Run deployment.
 
 ## Build Issues
 
+### Frontend: Container Failed to Start on Port 8080
+
+**Error:**
+```
+The user-provided container failed to start and listen on the port defined provided by the PORT=8080 environment variable
+```
+
+**Cause:** Nginx configuration was trying to use `${BACKEND_URL}` environment variable substitution, which nginx doesn't support natively.
+
+**Solution:** ✅ Fixed in latest Dockerfile - now uses `envsubst` to process nginx config template at container startup.
+
+**How it works:**
+1. `nginx.conf.template` contains `${BACKEND_URL}` placeholder
+2. `docker-entrypoint.sh` runs `envsubst` to replace placeholders with actual environment variables
+3. Generated `nginx.conf` is used by nginx
+
+**Verify:**
+```bash
+# Check that these files exist:
+# - frontend/nginx.conf.template (template with ${BACKEND_URL})
+# - frontend/docker-entrypoint.sh (substitution script)
+# - frontend/Dockerfile (uses ENTRYPOINT)
+```
+
 ### Frontend: "vite: not found" Error
 
 **Error:**

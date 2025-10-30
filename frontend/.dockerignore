@@ -5,8 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build output
-dist/
+# Build output (but keep dist/ as it's created during build)
 build/
 .vite/
 
@@ -30,9 +29,8 @@ coverage/
 .git/
 .gitignore
 
-# Documentation
+# Documentation (but keep nginx.conf.template and docker-entrypoint.sh)
 README.md
-*.md
 
 # Logs
 *.log
