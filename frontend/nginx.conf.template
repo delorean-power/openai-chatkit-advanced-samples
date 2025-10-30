@@ -17,6 +17,12 @@ http {
     keepalive_timeout 65;
     types_hash_max_size 2048;
 
+    # Increase buffer sizes for large headers (ChatKit/OpenAI responses)
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+    large_client_header_buffers 4 32k;
+
     # Gzip compression
     gzip on;
     gzip_vary on;
