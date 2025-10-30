@@ -117,6 +117,7 @@ chmod +x deploy/*.sh
 ### Documentation
 
 - **[QUICKSTART.md](QUICKSTART.md)** - 5-minute deployment guide
+- **[LIGHTSHIFT_SETUP.md](LIGHTSHIFT_SETUP.md)** - Internal domain setup (lightshift.local)
 - **[CLOUD_RUN_DEPLOYMENT.md](CLOUD_RUN_DEPLOYMENT.md)** - Complete deployment documentation
 - **[CUSTOM_AGENTS.md](CUSTOM_AGENTS.md)** - Guide for integrating custom agents and workflows
 
@@ -157,6 +158,9 @@ chmod +x deploy/*.sh
 
 # Deploy frontend
 ./deploy/deploy-frontend.sh
+
+# Set up internal domain (lightshift.local)
+./deploy/setup-domain.sh
 
 # Monitor services
 ./deploy/monitor.sh

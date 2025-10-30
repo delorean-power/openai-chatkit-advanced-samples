@@ -1,6 +1,6 @@
 # Quick Start Guide - Cloud Run Deployment
 
-Get your ChatKit application running on Cloud Run in under 10 minutes.
+Get your ChatKit application running on Cloud Run with `lightshift.local` domain in under 10 minutes.
 
 ## Prerequisites Checklist
 
@@ -29,6 +29,10 @@ nano .env.deploy
 GCP_PROJECT_ID=your-project-id
 GCP_REGION=us-central1
 OPENAI_API_KEY=sk-proj-your-key-here
+
+# Internal domain (lightshift.local pattern)
+BACKEND_CUSTOM_DOMAIN=chatkit-api.lightshift.local
+FRONTEND_CUSTOM_DOMAIN=chatkit.lightshift.local
 ```
 
 ### 2. Deploy (3 minutes)
@@ -44,9 +48,24 @@ gcloud auth login
 ./deploy/deploy-all.sh
 ```
 
-### 3. Access Your App
+### 3. Set Up Internal Domain
 
-After deployment completes, you'll see:
+```bash
+# Configure domain mapping for lightshift.local
+./deploy/setup-domain.sh
+
+# Follow the instructions to add DNS records
+```
+
+### 4. Access Your App
+
+After deployment and DNS configuration:
+```
+Frontend: https://chatkit.lightshift.local
+Backend:  https://chatkit-api.lightshift.local
+```
+
+Or use the Cloud Run URLs directly:
 ```
 Frontend URL: https://chatkit-frontend-xxxxx-uc.a.run.app
 Backend URL: https://chatkit-backend-xxxxx-uc.a.run.app
@@ -54,14 +73,14 @@ Backend URL: https://chatkit-backend-xxxxx-uc.a.run.app
 
 Open the Frontend URL in your browser and start chatting!
 
-## Post-Deployment Setup (Optional)
+## Post-Deployment Setup
 
-### Configure ChatKit Domain Key
+### Configure ChatKit Domain Key (Required)
 
-For production use, add your domain to the allowlist:
+Add your internal domain to the allowlist:
 
 1. Go to [OpenAI Domain Allowlist](https://platform.openai.com/settings/organization/security/domain-allowlist)
-2. Add your Cloud Run domain (from Frontend URL)
+2. Add: `chatkit.lightshift.local`
 3. Copy the generated domain key
 4. Update `.env.deploy`:
    ```bash
@@ -71,6 +90,10 @@ For production use, add your domain to the allowlist:
    ```bash
    ./deploy/deploy-frontend.sh
    ```
+
+### Configure DNS
+
+Add the DNS records provided by `setup-domain.sh` to your `lightshift.local` DNS configuration. See [LIGHTSHIFT_SETUP.md](LIGHTSHIFT_SETUP.md) for detailed instructions.
 
 ## Common Commands
 

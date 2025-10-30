@@ -18,6 +18,7 @@ This customization adds complete Google Cloud Run deployment capabilities to the
 - `deploy-backend.sh` - Backend deployment to Cloud Run
 - `deploy-frontend.sh` - Frontend deployment to Cloud Run
 - `deploy-all.sh` - Full deployment orchestration
+- `setup-domain.sh` - Configure lightshift.local domain mapping
 - `monitor.sh` - Interactive monitoring and management
 - `rollback.sh` - Service rollback utility
 - `cleanup.sh` - Resource cleanup
@@ -30,6 +31,7 @@ This customization adds complete Google Cloud Run deployment capabilities to the
 
 #### Documentation
 - `QUICKSTART.md` - 5-minute deployment guide
+- `LIGHTSHIFT_SETUP.md` - Internal domain setup guide (lightshift.local)
 - `CLOUD_RUN_DEPLOYMENT.md` - Comprehensive deployment documentation (60+ pages)
 - `CUSTOM_AGENTS.md` - Custom agents and workflows integration guide
 - `DEPLOYMENT_SUMMARY.md` - This file
@@ -46,7 +48,7 @@ This customization adds complete Google Cloud Run deployment capabilities to the
 - Docker installed
 - OpenAI API key
 
-### Deploy in 3 Steps
+### Deploy in 4 Steps
 
 ```bash
 # 1. Configure
@@ -57,8 +59,13 @@ cp .env.deploy.template .env.deploy
 chmod +x deploy/*.sh
 ./deploy/deploy-all.sh
 
-# 3. Access
-# Open the frontend URL provided after deployment
+# 3. Set up internal domain
+./deploy/setup-domain.sh
+# Follow instructions to configure DNS
+
+# 4. Access
+# https://chatkit.lightshift.local (after DNS setup)
+# Or use Cloud Run URL directly
 ```
 
 ## 🎯 Key Features

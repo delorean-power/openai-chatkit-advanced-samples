@@ -88,15 +88,34 @@ echo ""
 echo -e "${YELLOW}Frontend URL:${NC} $FRONTEND_URL"
 echo -e "${YELLOW}Backend URL:${NC} $BACKEND_URL"
 echo ""
+
+# Check if custom domain is configured
+if [ ! -z "$FRONTEND_CUSTOM_DOMAIN" ]; then
+    echo -e "${YELLOW}Internal Domain Configuration:${NC}"
+    echo "  Frontend: $FRONTEND_CUSTOM_DOMAIN"
+    echo "  Backend:  ${BACKEND_CUSTOM_DOMAIN:-chatkit-api.lightshift.local}"
+    echo ""
+    echo -e "${YELLOW}To set up domain mapping, run:${NC}"
+    echo "  ./deploy/setup-domain.sh"
+    echo ""
+fi
+
 echo -e "${YELLOW}Important next steps:${NC}"
-echo "1. Add your frontend domain to the ChatKit allowlist:"
+echo "1. Set up custom domain mapping (if not done):"
+echo "   ./deploy/setup-domain.sh"
+echo ""
+echo "2. Add your domain to the ChatKit allowlist:"
 echo "   https://platform.openai.com/settings/organization/security/domain-allowlist"
+echo "   Domain: ${FRONTEND_CUSTOM_DOMAIN:-$FRONTEND_URL}"
 echo ""
-echo "2. Update .env.deploy with the CHATKIT_DOMAIN_KEY from the allowlist"
+echo "3. Update .env.deploy with the CHATKIT_DOMAIN_KEY from the allowlist"
 echo ""
-echo "3. Redeploy the frontend with the domain key:"
+echo "4. Redeploy the frontend with the domain key:"
 echo "   ./deploy/deploy-frontend.sh"
 echo ""
 echo -e "${YELLOW}Test your deployment:${NC}"
-echo "Open: $FRONTEND_URL"
+echo "Cloud Run URL: $FRONTEND_URL"
+if [ ! -z "$FRONTEND_CUSTOM_DOMAIN" ]; then
+    echo "Internal URL:  https://$FRONTEND_CUSTOM_DOMAIN (after DNS setup)"
+fi
 echo ""

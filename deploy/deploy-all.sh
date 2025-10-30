@@ -29,3 +29,27 @@ echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}Deployment Complete!${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
+
+# Load configuration for domain info
+if [ -f .env.deploy ]; then
+    source .env.deploy
+fi
+
+echo -e "${YELLOW}Next Steps:${NC}"
+echo ""
+echo "1. Set up internal domain mapping:"
+echo "   ./deploy/setup-domain.sh"
+echo ""
+echo "2. Configure DNS for lightshift.local domain"
+echo ""
+echo "3. Add domain to ChatKit allowlist"
+echo ""
+echo "4. Update CHATKIT_DOMAIN_KEY in .env.deploy and redeploy frontend"
+echo ""
+
+if [ ! -z "$FRONTEND_CUSTOM_DOMAIN" ]; then
+    echo -e "${YELLOW}Your services will be available at:${NC}"
+    echo "  Frontend: https://${FRONTEND_CUSTOM_DOMAIN}"
+    echo "  Backend:  https://${BACKEND_CUSTOM_DOMAIN:-chatkit-api.lightshift.local}"
+    echo ""
+fi

@@ -71,3 +71,13 @@ curl -s "$BACKEND_URL/health" | jq '.' || echo "Health check endpoint: $BACKEND_
 echo ""
 echo -e "${YELLOW}Save this URL for frontend deployment!${NC}"
 echo ""
+
+# Check if custom domain is configured
+if [ ! -z "$BACKEND_CUSTOM_DOMAIN" ]; then
+    echo -e "${YELLOW}Custom Domain Configuration:${NC}"
+    echo "  Internal domain: $BACKEND_CUSTOM_DOMAIN"
+    echo ""
+    echo -e "${YELLOW}To set up domain mapping, run:${NC}"
+    echo "  ./deploy/setup-domain.sh"
+    echo ""
+fi

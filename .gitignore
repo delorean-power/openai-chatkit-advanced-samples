@@ -1,5 +1,11 @@
 # Local databases
 smart_call_triage.db
+
+# Deployment configuration
+.env.deploy
+.env.local
+.env.*.local
+
 # OS
 .DS_Store
 Thumbs.db
