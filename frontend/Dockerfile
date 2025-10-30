@@ -6,22 +6,22 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install ALL dependencies (including devDependencies needed for build)
+RUN npm ci && npm cache clean --force
 
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with build-time variables
 ARG VITE_CHATKIT_API_URL
 ARG VITE_CHATKIT_API_DOMAIN_KEY
 ARG VITE_FACTS_API_URL
 
-ENV VITE_CHATKIT_API_URL=${VITE_CHATKIT_API_URL}
-ENV VITE_CHATKIT_API_DOMAIN_KEY=${VITE_CHATKIT_API_DOMAIN_KEY}
-ENV VITE_FACTS_API_URL=${VITE_FACTS_API_URL}
-
-RUN npm run build
+# Set environment variables for build only (not persisted in final image)
+RUN VITE_CHATKIT_API_URL=${VITE_CHATKIT_API_URL} \
+    VITE_CHATKIT_API_DOMAIN_KEY=${VITE_CHATKIT_API_DOMAIN_KEY} \
+    VITE_FACTS_API_URL=${VITE_FACTS_API_URL} \
+    npm run build
 
 # Production stage with nginx
 FROM nginx:alpine
